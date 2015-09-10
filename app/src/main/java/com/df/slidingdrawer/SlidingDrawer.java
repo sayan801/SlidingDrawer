@@ -1,9 +1,5 @@
 package com.df.slidingdrawer;
 
-//import com.nineoldandroids.animation.Animator;
-//import com.nineoldandroids.animation.Animator.AnimatorListener;
-//import com.nineoldandroids.animation.ObjectAnimator;
-//import com.nineoldandroids.view.ViewHelper;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
@@ -15,7 +11,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
-import com.nineoldandroids.view.ViewHelper;
 
 public class SlidingDrawer extends FrameLayout {
 
@@ -336,19 +331,19 @@ public class SlidingDrawer extends FrameLayout {
 			switch(state){
 				case Top:
 					drawer.layout(0, 0, drawer.getWidth(), bottom);
-					ViewHelper.setTranslationY(drawer, 0);
+                    drawer.setTranslationY(0);
 					content.layout(0, content.getTop(), content.getWidth(),  bottom - drawer.getTop());
 					break;
 				
 				case Center:
 					drawer.layout(0, containerHeight / 2, drawer.getWidth(), bottom);
-					ViewHelper.setTranslationY(drawer, 0);
+                    drawer.setTranslationY(0);
 					content.layout(0, DRAG_BAR_VALUE, content.getWidth(),  bottom - containerHeight / 2);
 					break;
 				
 				case Bottom:
 					drawer.layout(0, bottom - DRAG_BAR_VALUE, drawer.getWidth(), bottom);
-					ViewHelper.setTranslationY(drawer, 0);
+                    drawer.setTranslationY(0);
 					content.layout(0, DRAG_BAR_VALUE, content.getWidth(),  bottom - containerHeight / 2);
 					break;
 			}
