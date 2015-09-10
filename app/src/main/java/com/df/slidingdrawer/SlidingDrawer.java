@@ -1,9 +1,11 @@
 package com.df.slidingdrawer;
 
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.Animator.AnimatorListener;
-import com.nineoldandroids.animation.ObjectAnimator;
-import com.nineoldandroids.view.ViewHelper;
+//import com.nineoldandroids.animation.Animator;
+//import com.nineoldandroids.animation.Animator.AnimatorListener;
+//import com.nineoldandroids.animation.ObjectAnimator;
+//import com.nineoldandroids.view.ViewHelper;
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -13,20 +15,22 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import com.nineoldandroids.view.ViewHelper;
+
 public class SlidingDrawer extends FrameLayout {
 
 	private LinearLayout drawer;
 	private View  content;
 	DrawerState state; 
 	
-	int MAX_MOVE_VALUE; //启动推拉动画的阀值
-	int DRAG_BAR_VALUE; //拖动条高度 
+	int MAX_MOVE_VALUE;
+	int DRAG_BAR_VALUE;
 	int MAX_ANIMATION_DURATION = 600;
 	int FAST_ANIMATION_DURATION = 100;
 	
-	int ANIMATION_BOUND_VALUE; //动画弹跳效果距离
+	int ANIMATION_BOUND_VALUE;
 	
-	boolean isAniating; //是否正在运行动画
+	boolean isAniating;
 	
 	public SlidingDrawer(Context context) {
 		super(context);
@@ -76,16 +80,16 @@ public class SlidingDrawer extends FrameLayout {
 		}
 	}
 
-	class LayoutClickListener implements OnTouchListener, AnimatorListener {
+	class LayoutClickListener implements OnTouchListener, Animator.AnimatorListener {
 
 		int lastX, lastY;
-		int orgY;// ACTION_DOWN时控件的Y值，用于计算用户拖拉过程中移动的距离，超过临界点时开启动画
+		int orgY;// ACTION_DOWN
 
 		int containerWidth;
 		int containerHeight;
 
 		boolean isPressing;
-		boolean isMoved;//主要用来判断tab事件的，如果移动过，将不产生tab事件。
+		boolean isMoved;
 		long pressTimeMillis;
 		
 		public LayoutClickListener(int screenW, int screenH) {
@@ -101,7 +105,7 @@ public class SlidingDrawer extends FrameLayout {
 			int ea = event.getAction();
 			switch (ea) {
 
-			case MotionEvent.ACTION_DOWN: // 按下
+			case MotionEvent.ACTION_DOWN:
 
 				lastX = (int) event.getRawX();
 				lastY = (int) event.getRawY();
@@ -119,7 +123,8 @@ public class SlidingDrawer extends FrameLayout {
 				
 				return true;
 
-			case MotionEvent.ACTION_MOVE: // 移动
+			case MotionEvent.ACTION_MOVE:
+
 				if (!isPressing) {
 					return false;
 				}
@@ -185,7 +190,7 @@ public class SlidingDrawer extends FrameLayout {
 			if(duration == FAST_ANIMATION_DURATION || duration < 200){
 				ani = ObjectAnimator.ofFloat(drawer, "translationY", 0, -drawer.getTop() ).setDuration(duration);
 			} else {
-				ani = ObjectAnimator.ofFloat(drawer, "translationY", 0, -drawer.getTop(), -drawer.getTop()+ANIMATION_BOUND_VALUE, -drawer.getTop() ).setDuration(duration);
+				ani = ObjectAnimator.ofFloat(drawer, "translationY", 0, -drawer.getTop(), -drawer.getTop() + ANIMATION_BOUND_VALUE, -drawer.getTop()).setDuration(duration);
 			}
 			
 			ani.addListener(this);
