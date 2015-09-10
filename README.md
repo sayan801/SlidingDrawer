@@ -1,15 +1,25 @@
-We are facing lots of issue with this implementation.. So we are trying to implement a new control based on AndroidSlidingDrawer ( this is also going to deprecate from API 17)..
+We have removed nineoldandroids dependency from SlidingDrawer-dfqin.. Now restructuring it as lib project..
+
+
+Below mentioned code will be maintained as sephiroth branch..
+
+SlidingDrawer-sephiroth
+=======================
+we are trying to implement a new control based on AndroidSlidingDrawer ( this is also going to deprecate from API 17)..
 
 This approach is Inspired from discussion found in this blog...
 
 http://blog.sephiroth.it/2011/03/29/widget-slidingdrawer-top-to-bottom/
 
+This code is running fine.. But it has only 2 states.. So This code will be maintained as sephiroth branch..
+
+
 
 Below mentioned code will be maintained as seperate branch dfqin-SlidingDrawer
 
 
-SlidingDrawer
-=============
+SlidingDrawer-dfqin
+====================
 
 A custom slide drawer widget support low api level 
 
