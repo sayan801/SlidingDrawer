@@ -228,6 +228,8 @@ public class MultiDirectionSlidingDrawer extends ViewGroup {
 		
 		int heightSpecMode = MeasureSpec.getMode( heightMeasureSpec );
 		int heightSpecSize = MeasureSpec.getSize( heightMeasureSpec );
+
+		//heightSpecSize *= 0.5;
 		
 		if ( widthSpecMode == MeasureSpec.UNSPECIFIED || heightSpecMode == MeasureSpec.UNSPECIFIED ) { throw new RuntimeException(
 				"SlidingDrawer cannot have UNSPECIFIED dimensions" ); }
