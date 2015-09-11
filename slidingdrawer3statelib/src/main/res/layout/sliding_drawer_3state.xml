@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    
+ 	<FrameLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	     >
+	    
+	    <FrameLayout 
+	        android:id="@+id/background_view"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:background="#FF00FF"
+	        >
+	        
+	    </FrameLayout>
+    
+	    <LinearLayout 
+	      android:id="@+id/drawer_layout"
+	      android:layout_width="match_parent"
+	      android:layout_height="200dp"
+	      android:clickable="true"
+	      android:orientation="vertical"
+	      >
+	      <FrameLayout 
+	          android:id="@+id/drawer_bar"
+	          android:layout_width="match_parent"
+	          android:layout_height="35dp"
+	          android:clickable="false"
+	          android:background="#54d66a"
+	          >
+	      </FrameLayout>
+	      
+		 <FrameLayout 
+			  android:id="@+id/drawer_content"              
+	          android:layout_width="match_parent"
+	          android:layout_height="0dp"
+	          android:layout_weight="1"
+	          android:paddingTop="20dp"
+	          android:background="@android:color/holo_orange_dark"
+	          android:clickable="true"
+	          >
+	     	
+	    </FrameLayout>
+	    
+	  </LinearLayout>
+    
+
+	</FrameLayout>
+    
+</merge>
