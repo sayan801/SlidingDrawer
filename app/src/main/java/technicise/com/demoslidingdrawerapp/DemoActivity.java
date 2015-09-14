@@ -10,6 +10,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class DemoActivity extends AppCompatActivity {
@@ -73,6 +75,65 @@ public class DemoActivity extends AppCompatActivity {
 
 
         frameLayoutObj.addView(listViewObj);
+
+        FrameLayout frameLayoutObjBottom=(FrameLayout)findViewById(R.id.drawer_content);
+        final ListView listViewObjForBottom = new ListView(this);
+        listViewObjForBottom.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+
+        // Defined Array values to show in ListView
+        String[] valuesForBottom = new String[] { "Amit Da",
+                "Amiyo",
+                "Amitabha Da",
+                "Soumen Da",
+                "Avik "
+
+        };
+
+
+        ArrayAdapter<String> adapterBottom = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, valuesForBottom);
+
+
+        // Assign adapter to ListView
+        listViewObjForBottom.setAdapter(adapterBottom);
+
+        // ListView Item Click Listener
+        listViewObjForBottom.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+
+                // ListView Clicked item index
+                int itemPosition     = position;
+
+                // ListView Clicked item value
+                String  itemValue    = (String) listViewObjForBottom.getItemAtPosition(position);
+
+                // Show Alert
+                Toast.makeText(getApplicationContext(),
+                        "Position :" + itemPosition + "  ListItem : " + itemValue, Toast.LENGTH_LONG)
+                        .show();
+
+            }
+
+        });
+
+
+
+        frameLayoutObjBottom.addView(listViewObjForBottom);
+
+        /*
+        *  Header Text
+        * */
+
+        FrameLayout FrameHeaderLayout=(FrameLayout)findViewById(R.id.drawer_bar);
+        final TextView TextViewObj = new TextView(this);
+
+        String  Count= String.valueOf(listViewObjForBottom.getAdapter().getCount());
+        TextViewObj.setText("ListView Total Item is "+Count);
+        TextViewObj.setGravity(View.TEXT_ALIGNMENT_CENTER);
+        FrameHeaderLayout.addView(TextViewObj);
 
 
     }
