@@ -1,5 +1,6 @@
 package technicise.com.demoslidingdrawerapp;
 
+import android.content.pm.PackageInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -92,6 +93,17 @@ public class DemoActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            try {
+                PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                String version = pInfo.versionName;
+                int verCode = pInfo.versionCode;
+
+                Toast.makeText(DemoActivity.this, "Version - " + version + ", Code - " + verCode, Toast.LENGTH_SHORT).show();
+            }
+            catch (Exception ex)
+            {
+                Toast.makeText(DemoActivity.this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            }
             return true;
         }
 
