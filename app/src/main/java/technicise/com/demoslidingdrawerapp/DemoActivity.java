@@ -2,27 +2,25 @@ package technicise.com.demoslidingdrawerapp;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-
-import technicise.com.slidingdrawer3statelib.SlidingDrawer;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 public class DemoActivity extends AppCompatActivity {
 
-    SlidingDrawer SlidingDrawerObj;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demo);
 
-        LinearLayout LL =(LinearLayout)findViewById(R.id.Testing);
-        SlidingDrawerObj=new SlidingDrawer(this);
-        SlidingDrawerObj.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        LL.addView(SlidingDrawerObj);
+
+        FrameLayout frameLayoutObj=(FrameLayout)findViewById(R.id.drawer_bar);
+        TextView tv2 = new TextView(this);
+        tv2.setText("Technicise");
+        frameLayoutObj.addView(tv2);
+
 
     }
 

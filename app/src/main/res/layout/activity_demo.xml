@@ -23,10 +23,9 @@
         android:text="@string/hello_world"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />-->
-
- <!-- <technicise.com.slidingdrawer3statelib.SlidingDrawer
+ <technicise.com.slidingdrawer3statelib.SlidingDrawer
         android:layout_width="fill_parent"
-        android:layout_height="match_parent"/>-->
+        android:layout_height="match_parent"/>
 
 
 
