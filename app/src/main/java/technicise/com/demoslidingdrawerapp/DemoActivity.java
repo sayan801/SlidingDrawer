@@ -13,9 +13,12 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.util.ArrayList;
 
 public class DemoActivity extends AppCompatActivity {
 
+    ListAdapter MembersListAdapter;
+    ArrayList<DataModel> DataArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +30,7 @@ public class DemoActivity extends AppCompatActivity {
 
         final ListView listViewObj = new ListView(this);
 
-        // Defined Array values to show in ListView
+       /* // Defined Array values to show in ListView
         String[] values = new String[] { "Android List View",
                 "Adapter implementation",
                 "Simple List View In Android",
@@ -70,11 +73,34 @@ public class DemoActivity extends AppCompatActivity {
 
             }
 
-        });
+        });*/
 
 
 
         frameLayoutObj.addView(listViewObj);
+
+
+
+
+        DataArray = new ArrayList<DataModel>();
+        MembersListAdapter = new ListAdapter(getApplicationContext(), DataArray);
+        listViewObj.setAdapter(MembersListAdapter);
+        String Load_List_View_API ="http://webservice.mycuratio.com/webservice/code/index.php?/communities/getCommunityDetailsByType/community-member";
+
+
+        TabHandler Json_Fetch = new TabHandler(getApplicationContext(), Load_List_View_API, DataArray) {
+
+
+            @Override
+            public void onReadyDataList() {
+                MembersListAdapter.notifyData();
+            }
+
+        };
+
+        Json_Fetch.fetchJSON(null);
+
+
 
         FrameLayout frameLayoutObjBottom=(FrameLayout)findViewById(R.id.drawer_content);
         final ListView listViewObjForBottom = new ListView(this);
