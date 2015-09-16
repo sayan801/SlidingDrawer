@@ -4,11 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:text="AAAAA"
-        />
 
     <technicise.com.slidingdrawer3statelib.SlidingDrawer
         android:layout_width="fill_parent"

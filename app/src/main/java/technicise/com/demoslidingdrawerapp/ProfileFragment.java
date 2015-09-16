@@ -1,17 +1,17 @@
 package technicise.com.demoslidingdrawerapp;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import java.util.ArrayList;
 
 /**
@@ -22,6 +22,9 @@ public class ProfileFragment extends Fragment {
     ArrayList<DataModel> DataArray;
     ListAdapter ProfileListAdapter ;
     public ListView listViewObjForBottom;
+
+    // Google Map
+    public GoogleMap googleMap;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,9 +37,9 @@ public class ProfileFragment extends Fragment {
 
         FrameLayout frameLayoutObj=(FrameLayout)v.findViewById(R.id.background_view);
 
-        final ListView listViewObj = new ListView(getActivity());
+       // final ListView listViewObj = new ListView(getActivity());
 
-       // Defined Array values to show in ListView
+      /* // Defined Array values to show in ListView
         String[] values = new String[] { "Android List View",
                 "Adapter implementation",
                 "Simple List View In Android",
@@ -79,12 +82,18 @@ public class ProfileFragment extends Fragment {
 
             }
 
-        });
+        });*/
 
+        LayoutInflater layoutInflater= (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        frameLayoutObj.addView(layoutInflater.inflate(R.layout.map_view, null));
 
+        try {
+            // Loading map
+            initilizeMap();
 
-        frameLayoutObj.addView(listViewObj);
-
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
         listViewObjForBottom = new ListView(getActivity());
@@ -120,6 +129,27 @@ public class ProfileFragment extends Fragment {
         return v;
     }
 
+    /**
+     * function to load map. If map is not created it will create it for you
+     * */
+    private void initilizeMap() {
+        if (googleMap == null) {
+            googleMap = ((MapFragment) getFragmentManager().findFragmentById(
+                    R.id.map)).getMap();
 
+            // check if map is created successfully or not
+            if (googleMap == null) {
+                Toast.makeText(getActivity(),
+                        "Sorry! unable to create maps", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        }
+    }
+
+    /*@Override
+    void onResume() {
+        super.onResume();
+        initilizeMap();
+    }*/
 
 }
