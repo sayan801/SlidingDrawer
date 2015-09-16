@@ -10,8 +10,14 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import java.util.ArrayList;
 
 /**
@@ -87,14 +93,25 @@ public class ProfileFragment extends Fragment {
         LayoutInflater layoutInflater= (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         frameLayoutObj.addView(layoutInflater.inflate(R.layout.map_view, null));
 
-        try {
-            // Loading map
-            initilizeMap();
+        // Getting Google Play availability status
+        int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity());
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        // Showing status
+        if(status!= ConnectionResult.SUCCESS)
+
+        { // Google Play Services are not available
+        // Showing Toast
+
         }
+        else {
+            try {
+                // Loading map
+                initilizeMap();
 
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         listViewObjForBottom = new ListView(getActivity());
         FrameLayout frameLayoutObjBottom=(FrameLayout)v.findViewById(R.id.drawer_content);
@@ -134,8 +151,19 @@ public class ProfileFragment extends Fragment {
      * */
     private void initilizeMap() {
         if (googleMap == null) {
-            googleMap = ((MapFragment) getFragmentManager().findFragmentById(
-                    R.id.map)).getMap();
+
+            // Get a handle to the Map Fragment
+            googleMap = ((MapFragment) getFragmentManager()
+                    .findFragmentById(R.id.map)).getMap();
+
+
+             googleMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(22.756919, 88.507255))
+                    .title("Bamangachi")
+                    .snippet("Population: 35k"));
+
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                    new LatLng(22.756919-0.03,  88.507255+0.001), 12));
 
             // check if map is created successfully or not
             if (googleMap == null) {
@@ -146,10 +174,10 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    /*@Override
-    void onResume() {
+    @Override
+    public void onResume(){
         super.onResume();
         initilizeMap();
-    }*/
+    }
 
-}
+  }

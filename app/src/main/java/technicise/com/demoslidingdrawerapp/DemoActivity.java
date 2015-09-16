@@ -1,9 +1,10 @@
 package technicise.com.demoslidingdrawerapp;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
 import android.view.View;
@@ -12,7 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 
-public class DemoActivity extends FragmentActivity {
+public class DemoActivity extends Activity {
 
     /* Within which the entire activity is enclosed */
     private DrawerLayout mDrawerLayout;
@@ -95,7 +96,7 @@ public class DemoActivity extends FragmentActivity {
 
         /* Setting default fragment */
       selectedPosition = 0;
-      updateFragment();
+        updateFragment();
 
     }
 
@@ -126,7 +127,7 @@ public class DemoActivity extends FragmentActivity {
         ProfileFragment rFragment = new ProfileFragment();
 
         /* Replace fragment */
-        android.app.FragmentTransaction ft = fragmentManager.beginTransaction();
+        FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.replace(R.id.content_frame, rFragment);
         ft.commit();
     }
