@@ -21,6 +21,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,7 +29,7 @@ import org.json.JSONObject;
 /**
  * Created by amiyo on 16/9/15.
  */
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements View.OnClickListener, GoogleMap.OnMarkerClickListener, GoogleMap.OnInfoWindowClickListener{
 
 
     public ListView listViewObjForBottom;
@@ -82,6 +83,16 @@ public class ProfileFragment extends Fragment {
         FrameHeaderLayout.addView(TextViewObj);
 
         return v;
+    }
+
+    @Override
+    public void onClick(View v) {
+
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+
     }
 
     /* ****** Custom BaseAdapter ****** */
@@ -151,17 +162,41 @@ public class ProfileFragment extends Fragment {
             googleMap = ((MapFragment) getFragmentManager()
                     .findFragmentById(R.id.map)).getMap();
 
-            url1 =
-                    "http://webservice.mycuratio.com/webservice/code/index.php?/ProviderNew/getProviderByPartialNameZipDistance/smith/60601/5"; //400
+            url1 ="http://webservice.mycuratio.com/webservice/code/index.php?/ProviderNew/getProviderByPartialNameZipDistance/smith/60601/5"; //400
             new ProviderSearchPareJSONdataAsyntask().execute();
 
-            // check if map is created successfully or not
-            if (googleMap == null) {
-                Toast.makeText(getActivity(),
-                        "Sorry! unable to create maps", Toast.LENGTH_SHORT)
-                        .show();
+
+            if(googleMap != null)
+            {
+                googleMap.setOnMarkerClickListener(this);
+                googleMap.setOnInfoWindowClickListener(this);
             }
         }
+    }
+
+
+    public boolean onMarkerClick(Marker marker)
+    {
+        try
+        {
+            marker.showInfoWindow();
+            String m = marker.getId();
+            m = m.replace("m","");
+            final int alfaValue =  Integer.valueOf(m);
+
+
+            //auto-Scroll the ListView position
+            listViewObjForBottom.smoothScrollToPositionFromTop(alfaValue, alfaValue);
+            //programatically click on ListView row Item for corresponding marker Click
+            listViewObjForBottom.performItemClick(listViewObjForBottom.getAdapter().getView(alfaValue, null, null), alfaValue, listViewObjForBottom.getItemIdAtPosition(alfaValue));
+
+        }
+        catch (Exception error)
+        {
+
+            error.printStackTrace();
+        }
+        return false;
     }
 
     /** * Private Class for Parsing the JSON over the Internet.  */
@@ -253,9 +288,9 @@ public class ProfileFragment extends Fragment {
                     if (googleMap != null) {
                         googleMap.addMarker(new MarkerOptions()
                                         .position(new LatLng(providerLatitude, providerLongitude))
-                                        .title(firstName[i])
-                                        .snippet(address[i])
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.markerblack)));
+                                .title(firstName[i])
+                                .snippet(address[i])
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.markerblack)));
 
                     }
 

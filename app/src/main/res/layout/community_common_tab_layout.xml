@@ -183,7 +183,7 @@
                     android:layout_height="wrap_content"
                     android:clickable="false"
                     android:gravity="center"
-                    android:text="0"
+                    android:text=" "
                     android:textColor="@android:color/white"
                     android:textSize="14sp"/>
 
