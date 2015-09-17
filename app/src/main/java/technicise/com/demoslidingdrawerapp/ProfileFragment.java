@@ -17,6 +17,7 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import org.json.JSONArray;
@@ -269,7 +270,8 @@ public class ProfileFragment extends Fragment {
                                         .position(new LatLng(providerLatitude, providerLongitude))
                                         .title(firstName[i])
                                         .snippet(address[i])
-                        /*.icon(IconMarkerplot)*/);
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.markerblack)));
+                        
                     }
 
 
