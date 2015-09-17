@@ -2,7 +2,9 @@ package technicise.com.demoslidingdrawerapp;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +19,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
+import org.json.JSONArray;
+import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
@@ -28,9 +31,12 @@ public class ProfileFragment extends Fragment {
     ArrayList<DataModel> DataArray;
     ListAdapter ProfileListAdapter ;
     public ListView listViewObjForBottom;
+    public String[] firstName, providerNpiID, lat, longg, address;
 
     // Google Map
     public GoogleMap googleMap;
+    Double providerLatitude = 0.0, providerLongitude = 0.0;
+    String jsonResponse, url1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -156,14 +162,17 @@ public class ProfileFragment extends Fragment {
             googleMap = ((MapFragment) getFragmentManager()
                     .findFragmentById(R.id.map)).getMap();
 
-
+            url1 =
+                    "http://webservice.mycuratio.com/webservice/code/index.php?/ProviderNew/getProviderByPartialNameZipDistance/smith/60601/5"; //400
+            new ProviderSearchPareJSONdataAsyntask().execute();
+/*
              googleMap.addMarker(new MarkerOptions()
                     .position(new LatLng(22.756919, 88.507255))
                     .title("Bamangachi")
                     .snippet("Population: 35k"));
 
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                    new LatLng(22.756919-0.03,  88.507255+0.001), 12));
+                    new LatLng(22.756919-0.03,  88.507255+0.001), 12));*/
 
             // check if map is created successfully or not
             if (googleMap == null) {
@@ -174,10 +183,115 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        initilizeMap();
-    }
+    /** * Private Class for Parsing the JSON over the Internet.  */
+    private class ProviderSearchPareJSONdataAsyntask extends AsyncTask<Void, Void, Void>
+    {
+        @Override
+        protected void onPreExecute()
+        {
 
-  }
+        }
+
+        @Override
+        protected Void doInBackground(Void... params)
+        {
+            ServiceHandler serviceHandler = new ServiceHandler();
+
+            // Making a request to url and getting the response
+            jsonResponse = serviceHandler.makeServiceCall(url1, ServiceHandler.GET);
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            try {
+                JSONObject jsonObject = new JSONObject(jsonResponse);
+                JSONArray jsonArray = jsonObject.getJSONArray("npidata");
+
+                //set Array Size;
+                firstName = new String[jsonArray.length()];
+                providerNpiID = new String[jsonArray.length()];
+                lat = new String[jsonArray.length()];
+                longg = new String[jsonArray.length()];
+                address = new String[jsonArray.length()];
+
+                //set counted search result
+               // middle.setText("  " + jsonArray.length() + " Data found");
+
+                JSONObject jsonObject1;
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    try {
+                        jsonObject1 = jsonArray.getJSONObject(i);
+
+                        // getting  provider Name
+                        if (jsonObject1.has("fullname")) {
+                            firstName[i] = jsonObject1.getString("fullname");
+                        } else {
+                            firstName[i] = "Unknown Name";
+                        }
+                        if (jsonObject1.has("fulladdress")) {
+                            address[i] = jsonObject1.getString("fulladdress");
+                        } else {
+                            address[i] = "Unknown Address";
+                        }
+
+                        // for Lat Common code for all like NAME & ALSO HOSPITAL
+                        if (jsonObject1.has("latitude")) {
+                            if (String.valueOf(jsonObject1.getDouble("latitude")).equals("Unknown") ||
+                                    String.valueOf(jsonObject1.getDouble("latitude")).equals("OVER_QUERY_LIMIT")) {
+                                lat[i] = String.valueOf(0.0);
+                            } else {
+                                lat[i] = String.valueOf(jsonObject1.getDouble("latitude"));
+                            }
+                        } else {
+                            lat[i] = String.valueOf(0.0);
+                        }
+                        // for Long
+                        if (jsonObject1.has("longitude")) {
+                            if (String.valueOf(jsonObject1.getDouble("longitude")).equals("Unknown") ||
+                                    String.valueOf(jsonObject1.getDouble("longitude")).equals("OVER_QUERY_LIMIT")) {
+                                longg[i] = String.valueOf(0.0);
+                            } else {
+                                longg[i] = String.valueOf(jsonObject1.getDouble("longitude"));
+                            }
+                        } else {
+                            longg[i] = String.valueOf(0.0);
+                        }
+                    } catch (Exception e) {
+                        Log.d("CRASH 141 ", e.toString());
+                    }
+
+                    providerLatitude = Double.parseDouble(lat[i]);
+                    providerLongitude = Double.parseDouble(longg[i]);
+                    if (googleMap != null) {
+                        googleMap.addMarker(new MarkerOptions()
+                                        .position(new LatLng(providerLatitude, providerLongitude))
+                                        .title(firstName[i])
+                                        .snippet(address[i])
+                        /*.icon(IconMarkerplot)*/);
+                    }
+
+
+                }
+
+                if (googleMap != null) {
+                    //1st marker as Center position
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                            new LatLng(Double.parseDouble(lat[0]), Double.parseDouble(longg[0])), 9));
+                }
+
+            } catch (Exception e) {
+                Log.d("CRASH 161 ", e.toString());
+            }
+        }
+
+    }
+           @Override
+            public void onResume () {
+                super.onResume();
+                initilizeMap();
+            }
+
+        }
+
