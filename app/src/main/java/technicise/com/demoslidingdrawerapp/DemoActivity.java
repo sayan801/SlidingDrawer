@@ -95,8 +95,8 @@ public class DemoActivity extends Activity {
         });
 
         /* Setting default fragment */
-      selectedPosition = 0;
-        updateFragment();
+      selectedPosition = 1;
+        updateFragment2();
 
     }
 
