@@ -1,5 +1,6 @@
 package technicise.com.demoslidingdrawerapp;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -22,22 +24,21 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import java.util.ArrayList;
 
 /**
  * Created by amiyo on 16/9/15.
  */
 public class ProfileFragment extends Fragment {
 
-    ArrayList<DataModel> DataArray;
-    ListAdapter ProfileListAdapter ;
+
     public ListView listViewObjForBottom;
     public String[] firstName, providerNpiID, lat, longg, address;
-
     // Google Map
     public GoogleMap googleMap;
+
     Double providerLatitude = 0.0, providerLongitude = 0.0;
     String jsonResponse, url1;
+    TextView TextViewObj;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,54 +50,6 @@ public class ProfileFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_layout2, container, false);
 
         FrameLayout frameLayoutObj=(FrameLayout)v.findViewById(R.id.background_view);
-
-       // final ListView listViewObj = new ListView(getActivity());
-
-      /* // Defined Array values to show in ListView
-        String[] values = new String[] { "Android List View",
-                "Adapter implementation",
-                "Simple List View In Android",
-                "Create List View Android",
-                "Android Example",
-                "List View Source Code",
-                "List View Array Adapter",
-                "Android Example List View"
-        };
-        // Define a new Adapter
-        // First parameter - Context
-        // Second parameter - Layout for the row
-        // Third parameter - ID of the TextView to which the data is written
-        // Forth - the Array of data
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, values);
-
-
-        // Assign adapter to ListView
-        listViewObj.setAdapter(adapter);
-
-        // ListView Item Click Listener
-        listViewObj.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-
-                // ListView Clicked item index
-                int itemPosition     = position;
-
-                // ListView Clicked item value
-                String  itemValue    = (String) listViewObj.getItemAtPosition(position);
-
-                // Show Alert
-                Toast.makeText(getActivity(),
-                        "Position :" + itemPosition + "  ListItem : " + itemValue, Toast.LENGTH_LONG)
-                        .show();
-
-            }
-
-        });*/
-
         LayoutInflater layoutInflater= (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         frameLayoutObj.addView(layoutInflater.inflate(R.layout.map_view, null));
 
@@ -104,54 +57,89 @@ public class ProfileFragment extends Fragment {
         int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity());
 
         // Showing status
-        if(status!= ConnectionResult.SUCCESS)
+            if(status!= ConnectionResult.SUCCESS)
 
-        { // Google Play Services are not available
-        // Showing Toast
+            { // Google Play Services are not available
+            // Showing Toast
 
-        }
-        else {
-            try {
-                // Loading map
-                initilizeMap();
-
-            } catch (Exception e) {
-                e.printStackTrace();
             }
-        }
+            else {
+                    try {
+                        // Loading map
+                        initilizeMap();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                  }
+            }
 
         listViewObjForBottom = new ListView(getActivity());
         FrameLayout frameLayoutObjBottom=(FrameLayout)v.findViewById(R.id.drawer_content);
-        DataArray = new ArrayList<DataModel>();
-        ProfileListAdapter = new ListAdapter(getActivity(), DataArray);
-        listViewObjForBottom.setAdapter(ProfileListAdapter);
-        String Load_List_View_API ="http://webservice.mycuratio.com/webservice/code/index.php?/communities/getCommunityDetailsByType/community-member";
-
-
-        TabHandler Json_Fetch = new TabHandler(getActivity(), Load_List_View_API, DataArray) {
-
-
-            @Override
-            public void onReadyDataList() {
-                ProfileListAdapter.notifyData();
-            }
-
-        };
-
-        Json_Fetch.fetchJSON(null);
-
         frameLayoutObjBottom.addView(listViewObjForBottom);
 
         FrameLayout FrameHeaderLayout=(FrameLayout)v.findViewById(R.id.drawer_bar);
-        final TextView TextViewObj = new TextView(getActivity());
-
-        String  Count= String.valueOf(listViewObjForBottom.getAdapter().getCount());
-        TextViewObj.setText("ListView Total Item is "+Count);
-        TextViewObj.setGravity(View.TEXT_ALIGNMENT_CENTER);
+        TextViewObj = new TextView(getActivity());
         FrameHeaderLayout.addView(TextViewObj);
 
         return v;
     }
+
+    /* ****** Custom BaseAdapter ****** */
+    public class SearchResultAdapter extends BaseAdapter
+    {
+        Context context;
+
+        public SearchResultAdapter(Context context)
+        {
+            this.context = context;
+        }
+
+        @Override
+        public int getCount()
+        {
+            return firstName.length;
+        }
+
+        @Override
+        public Object getItem(int position)
+        {
+            return position;
+        }
+
+        @Override
+        public long getItemId(int position)
+        {
+            return position;
+        }
+
+        @Override
+        public int getViewTypeCount()
+        {
+            return getCount();
+        }
+
+        @Override
+        public int getItemViewType(int position)
+        {
+            return position;
+        }
+        @SuppressLint("InflateParams")
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent)
+        {
+            LayoutInflater inflater = LayoutInflater.from(context);
+
+            convertView = inflater.inflate(R.layout.community_common_tab_layout, null);
+
+            TextView FirstName = (TextView) convertView.findViewById(R.id.from);
+            TextView BusinessAddress = (TextView) convertView.findViewById(R.id.subject);
+
+            FirstName.setText(firstName[position]+"");
+            BusinessAddress.setText(address[position]+"");
+            return convertView;
+        }
+    }
+
 
     /**
      * function to load map. If map is not created it will create it for you
@@ -166,14 +154,6 @@ public class ProfileFragment extends Fragment {
             url1 =
                     "http://webservice.mycuratio.com/webservice/code/index.php?/ProviderNew/getProviderByPartialNameZipDistance/smith/60601/5"; //400
             new ProviderSearchPareJSONdataAsyntask().execute();
-/*
-             googleMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(22.756919, 88.507255))
-                    .title("Bamangachi")
-                    .snippet("Population: 35k"));
-
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                    new LatLng(22.756919-0.03,  88.507255+0.001), 12));*/
 
             // check if map is created successfully or not
             if (googleMap == null) {
@@ -218,7 +198,7 @@ public class ProfileFragment extends Fragment {
                 address = new String[jsonArray.length()];
 
                 //set counted search result
-               // middle.setText("  " + jsonArray.length() + " Data found");
+                TextViewObj.setText("  " + jsonArray.length() + " Data found");
 
                 JSONObject jsonObject1;
                 for (int i = 0; i < jsonArray.length(); i++) {
@@ -265,13 +245,18 @@ public class ProfileFragment extends Fragment {
 
                     providerLatitude = Double.parseDouble(lat[i]);
                     providerLongitude = Double.parseDouble(longg[i]);
+
+                    /*
+                    *  Marker  Add
+                    * */
+
                     if (googleMap != null) {
                         googleMap.addMarker(new MarkerOptions()
                                         .position(new LatLng(providerLatitude, providerLongitude))
                                         .title(firstName[i])
                                         .snippet(address[i])
                                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.markerblack)));
-                        
+
                     }
 
 
@@ -286,14 +271,18 @@ public class ProfileFragment extends Fragment {
             } catch (Exception e) {
                 Log.d("CRASH 161 ", e.toString());
             }
+
+
+            listViewObjForBottom.setAdapter(new SearchResultAdapter(getActivity()));
         }
 
     }
-           @Override
-            public void onResume () {
-                super.onResume();
-                initilizeMap();
-            }
-
+        @Override
+        public void onResume ()
+        {
+            super.onResume();
+             initilizeMap();
         }
+
+ }
 
