@@ -84,9 +84,13 @@ public class DemoActivity extends Activity {
                 selectedPosition = position;
 
                 if(selectedPosition==0)
-                {updateFragment();}
-                else {
+                {
+                    updateFragment();}
+                else if(selectedPosition==1){
                     updateFragment2();
+                }
+                else if(selectedPosition==2){
+                    updateFragment3();
                 }
 
 				/* Closing the drawer */
@@ -95,8 +99,8 @@ public class DemoActivity extends Activity {
         });
 
         /* Setting default fragment */
-      selectedPosition = 1;
-        updateFragment2();
+      selectedPosition = 2;
+        updateFragment3();
 
     }
 
@@ -125,6 +129,19 @@ public class DemoActivity extends Activity {
 
         /* Creating fragment instance */
         ProfileFragment rFragment = new ProfileFragment();
+
+        /* Replace fragment */
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        ft.replace(R.id.content_frame, rFragment);
+        ft.commit();
+    }
+
+    public void updateFragment3() {
+        /* Getting reference to the FragmentManager */
+        FragmentManager fragmentManager = getFragmentManager();
+
+        /* Creating fragment instance */
+        VitalsFragment rFragment = new VitalsFragment();
 
         /* Replace fragment */
         FragmentTransaction ft = fragmentManager.beginTransaction();
