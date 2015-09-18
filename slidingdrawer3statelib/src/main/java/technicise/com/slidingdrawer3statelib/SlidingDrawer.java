@@ -38,7 +38,6 @@ public class SlidingDrawer extends FrameLayout {
 		super(context);
 		LayoutInflater.from(context).inflate(R.layout.sliding_drawer_3state, this, true);
 		sharedPrefClassObj = new SharedPreferenceClass(context);
-		Log.d("ShareValue1",""+sharedPrefClassObj.getKeySetSlidingState());
 
 	}
 
@@ -46,14 +45,14 @@ public class SlidingDrawer extends FrameLayout {
 		super(context, attrs);
 		LayoutInflater.from(context).inflate(R.layout.sliding_drawer_3state, this, true);
 		sharedPrefClassObj = new SharedPreferenceClass(context);
-		Log.d("ShareValue2",""+sharedPrefClassObj.getKeySetSlidingState());
+
 	}
 
 	public SlidingDrawer(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		LayoutInflater.from(context).inflate(R.layout.sliding_drawer_3state, this, true);
 		sharedPrefClassObj = new SharedPreferenceClass(context);
-		Log.d("ShareValue3",""+sharedPrefClassObj.getKeySetSlidingState());
+
 	}
 
 	@Override
@@ -257,12 +256,29 @@ public class SlidingDrawer extends FrameLayout {
 		 * when user tap the drag bar, change the state.
 		 */
 		private void tapAnimation(){
+
+			if(sharedPrefClassObj.getKeySetSlidingState().matches("SliderStateTwo"))
+			{
+				SliderStateTwo();
+			}
+			else{
+				if(state == DrawerState.Top){
+					move2Bottom(MAX_ANIMATION_DURATION);
+				} else if(state == DrawerState.Center){
+					move2Top(MAX_ANIMATION_DURATION, true);
+				} else {
+					move2Center(MAX_ANIMATION_DURATION, true);
+				}
+			}
+
+		}
+
+		public void SliderStateTwo()
+		{
 			if(state == DrawerState.Top){
-				move2Bottom(MAX_ANIMATION_DURATION);
+				move2Center(MAX_ANIMATION_DURATION, true);
 			} else if(state == DrawerState.Center){
 				move2Top(MAX_ANIMATION_DURATION, true);
-			} else {
-				move2Center(MAX_ANIMATION_DURATION, true);
 			}
 		}
 		

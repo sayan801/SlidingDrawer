@@ -30,7 +30,7 @@ public class VitalsFragment extends Fragment {
         LayoutInflater layoutInflater= (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         frameLayoutObj.addView(layoutInflater.inflate(R.layout.chart_graph_common_xml, null));
         sharedPrefClassObj = new SharedPreferenceClass(getActivity());
-        sharedPrefClassObj.setKeySetSlidingState("11");
+        sharedPrefClassObj.setKeySetSlidingState("SliderStateTwo");
         return v;
     }
 

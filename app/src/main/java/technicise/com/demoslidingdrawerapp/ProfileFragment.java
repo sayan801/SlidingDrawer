@@ -26,6 +26,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import technicise.com.slidingdrawer3statelib.SharedPreferenceClass;
+
 /**
  * Created by amiyo on 16/9/15.
  */
@@ -40,6 +42,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, G
     Double providerLatitude = 0.0, providerLongitude = 0.0;
     String jsonResponse, url1;
     TextView TextViewObj;
+    SharedPreferenceClass sharedPrefClassObj;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,6 +56,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, G
         FrameLayout frameLayoutObj=(FrameLayout)v.findViewById(R.id.background_view);
         LayoutInflater layoutInflater= (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         frameLayoutObj.addView(layoutInflater.inflate(R.layout.map_view, null));
+
+        sharedPrefClassObj = new SharedPreferenceClass(getActivity());
+        sharedPrefClassObj.setKeySetSlidingState("SliderStateThree");
 
         // Getting Google Play availability status
         int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity());
