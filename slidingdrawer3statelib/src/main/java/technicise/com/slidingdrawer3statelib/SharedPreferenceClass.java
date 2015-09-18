@@ -1,4 +1,4 @@
-package technicise.com.demoslidingdrawerapp;
+package technicise.com.slidingdrawer3statelib;
 
 import android.content.Context;
 import android.content.SharedPreferences;

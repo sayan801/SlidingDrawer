@@ -8,10 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import technicise.com.slidingdrawer3statelib.SharedPreferenceClass;
+
 /**
  * Created by amiyo on 18/9/15.
  */
 public class VitalsFragment extends Fragment {
+
+    SharedPreferenceClass sharedPrefClassObj;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -25,7 +29,8 @@ public class VitalsFragment extends Fragment {
         FrameLayout frameLayoutObj=(FrameLayout)v.findViewById(R.id.background_view);
         LayoutInflater layoutInflater= (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         frameLayoutObj.addView(layoutInflater.inflate(R.layout.chart_graph_common_xml, null));
-
+        sharedPrefClassObj = new SharedPreferenceClass(getActivity());
+        sharedPrefClassObj.setKeySetSlidingState("11");
         return v;
     }
 

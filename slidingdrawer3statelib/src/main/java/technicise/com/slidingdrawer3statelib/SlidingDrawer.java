@@ -26,20 +26,34 @@ public class SlidingDrawer extends FrameLayout {
 	int ANIMATION_BOUND_VALUE;
 	
 	boolean isAniating;
+
+	/*
+	* Call SharePref
+	* */
+	SharedPreferenceClass sharedPrefClassObj;
+
 	
 	public SlidingDrawer(Context context) {
+
 		super(context);
 		LayoutInflater.from(context).inflate(R.layout.sliding_drawer_3state, this, true);
+		sharedPrefClassObj = new SharedPreferenceClass(context);
+		Log.d("ShareValue1",""+sharedPrefClassObj.getKeySetSlidingState());
+
 	}
 
 	public SlidingDrawer(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		LayoutInflater.from(context).inflate(R.layout.sliding_drawer_3state, this, true);
+		sharedPrefClassObj = new SharedPreferenceClass(context);
+		Log.d("ShareValue2",""+sharedPrefClassObj.getKeySetSlidingState());
 	}
 
 	public SlidingDrawer(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		LayoutInflater.from(context).inflate(R.layout.sliding_drawer_3state, this, true);
+		sharedPrefClassObj = new SharedPreferenceClass(context);
+		Log.d("ShareValue3",""+sharedPrefClassObj.getKeySetSlidingState());
 	}
 
 	@Override

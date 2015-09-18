@@ -11,6 +11,7 @@
     <string-array name="menus">
         <item>Home</item>
         <item>Profile</item>
+        <item>Vitals</item>
 
     </string-array>
 
